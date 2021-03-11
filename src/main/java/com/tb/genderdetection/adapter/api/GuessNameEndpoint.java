@@ -1,8 +1,6 @@
 package com.tb.genderdetection.adapter.api;
 
 import com.tb.genderdetection.domain.Gender;
-import com.tb.genderdetection.domain.GenderGuesserMultipleService;
-import com.tb.genderdetection.domain.GenderGuesserSingleService;
 import com.tb.genderdetection.domain.port.GenderGuessing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

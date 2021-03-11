@@ -1,9 +1,7 @@
 package com.tb.genderdetection.adapter;
 
-import com.tb.genderdetection.adapter.repository.MaleNameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
