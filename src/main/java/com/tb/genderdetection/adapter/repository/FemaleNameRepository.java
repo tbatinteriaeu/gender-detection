@@ -3,6 +3,8 @@ package com.tb.genderdetection.adapter.repository;
 import com.tb.genderdetection.adapter.FileScanner;
 import com.tb.genderdetection.domain.Gender;
 import com.tb.genderdetection.domain.port.NameRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
@@ -16,6 +18,8 @@ import java.util.stream.Stream;
 @Repository
 public class FemaleNameRepository implements NameRepository {
 
+    private Logger logger = LoggerFactory.getLogger(FemaleNameRepository.class);
+
     @Value("${app.db-flat.female}")
     private String fileName;
 
@@ -25,7 +29,7 @@ public class FemaleNameRepository implements NameRepository {
         try {
             found = FileScanner.getNewInstance(fileName).findLine(name);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return found;
     }
@@ -36,7 +40,7 @@ public class FemaleNameRepository implements NameRepository {
             fname = new ClassPathResource(fileName).getFile().getAbsoluteFile().getPath();
             return Files.lines(Path.of(fname));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return null;
     }
@@ -52,7 +56,7 @@ public class FemaleNameRepository implements NameRepository {
         try {
             count = FileScanner.getNewInstance(fileName).countTokens(names);
         } catch (IOException e) {
-            System.out.println(e);
+            logger.error(e.getMessage(), e);
         }
         return count;
     }
