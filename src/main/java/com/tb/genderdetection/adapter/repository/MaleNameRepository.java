@@ -4,6 +4,8 @@ import com.tb.genderdetection.adapter.FileScanner;
 import com.tb.genderdetection.domain.Gender;
 import com.tb.genderdetection.domain.port.NameRepository;
 import org.apache.tomcat.jni.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -24,8 +26,7 @@ public class MaleNameRepository implements NameRepository {
     @Value("${app.db-flat.male}")
     private String fileName;
 
-    private FileScanner fileScanner;
-
+    private Logger logger = LoggerFactory.getLogger(MaleNameRepository.class);
 
     @Override
     public String findByName(String name) {
@@ -33,7 +34,7 @@ public class MaleNameRepository implements NameRepository {
         try {
             found = FileScanner.getNewInstance(fileName).findLine(name);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return found;
     }
@@ -44,7 +45,7 @@ public class MaleNameRepository implements NameRepository {
             fname = new ClassPathResource(fileName).getFile().getAbsoluteFile().getPath();
             return Files.lines(Path.of(fname));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return null;
     }
@@ -60,42 +61,8 @@ public class MaleNameRepository implements NameRepository {
         try {
             count = FileScanner.getNewInstance(fileName).countTokens(names);
         } catch (IOException e) {
-            System.out.println(e);
+            logger.error(e.getMessage(), e);
         }
         return count;
     }
-
-//    @Override
-//    public LinkedList<String> findAll() {
-//        LinkedList<String> names = new LinkedList<>();
-//        try {
-//            FileScanner fileScanner = new FileScanner(fileName).build();
-//            names = fileScanner.readAll();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return names;
-//
-//        System.out.println(fileName);
-//        LinkedList<String> names = new LinkedList<>();
-//        Scanner scanner = null;
-//        InputStream fileStream = getClass().getClassLoader().getResourceAsStream(fileName);
-//        try {
-//            InputStream resource = new ClassPathResource(
-//                    "db-flat/male.txt").getInputStream();
-//            scanner = new FileScanner(resource).build().getScanner();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        while (scanner.hasNextLine()) {
-//            names.add(scanner.nextLine());
-//        }
-//        System.out.println(names);
-//        return names;
-        //        Flux<String> stringFlux = Flux.using(
-//                () -> Files.lines(ipPath),
-//                Flux::fromStream,
-//                Stream::close
-//        );
-//    }
 }

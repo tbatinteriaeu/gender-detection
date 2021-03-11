@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("guess")
 public class GuessNameEndpoint {
 
-    @Autowired
-    public GuessNameEndpoint(GenderGuessing genderGuesserSingleService, GenderGuessing genderGuesserMultipleService) {
-        this.genderGuesserSingleService = genderGuesserSingleService;
-        this.genderGuesserMultipleService = genderGuesserMultipleService;
-    }
-
-
     GenderGuessing genderGuesserMultipleService;
 
     GenderGuessing genderGuesserSingleService;
+
+    @Autowired
+    public GuessNameEndpoint(@Qualifier("genderGuesserSingleService") GenderGuessing genderGuesserSingleService,
+                             @Qualifier("genderGuesserMultipleService") GenderGuessing genderGuesserMultipleService) {
+        this.genderGuesserSingleService = genderGuesserSingleService;
+        this.genderGuesserMultipleService = genderGuesserMultipleService;
+    }
 
     @GetMapping(path = "/single/{name}")
     Gender getGuessSingle(@PathVariable("name") final String name ) {
